@@ -5,3 +5,11 @@
 - No Underscore dependency
 - Controller rerender options
 - Encapsulate Rails controllers with realtime options
+- Private subscription DSL on client/server
+- Easier logger DSL, or remove dependency
+- More powerful flush DSL: accept something like:
+
+    {
+      id: 4
+      status: 'old'
+    }

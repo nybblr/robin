@@ -5,14 +5,14 @@ class Logger
   environment: 'development'
 
   debug: (msg) ->
-    @log('debug',msg) if _(['debug']).include(@logLevel)
+    @log('debug', msg) if _(['debug']).include(@logLevel)
 
   warn: (msg) ->
-    @log('warn',msg) if _(['debug','warn']).include(@logLevel)
+    @log('warn', msg) if _(['debug', 'warn']).include(@logLevel)
 
   error: (msg) ->
-    if _(['debug','warn','error']).include(@logLevel)
-      @log('error',msg)
+    if _(['debug', 'warn', 'error']).include(@logLevel)
+      @log('error', msg)
 
   log: (level, msg) ->
     console?.log(level + ': ' + msg)

@@ -1,4 +1,5 @@
-Batman.ModelUpdater =
+# Utility class for updating models in memory.
+Batman.Reactor =
   # Private queue for jQuery
   _q: $({})
 

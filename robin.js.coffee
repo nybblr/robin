@@ -1,3 +1,4 @@
+# Push-persistence backed by Faye.
 class Batman.Robin extends Batman.Object
   @_nest: []
   @_verbs: ["updated", "created", "destroyed", "flushed", "batched"]
@@ -27,7 +28,7 @@ class Batman.Robin extends Batman.Object
     if Batman.Robin.activeXhrCount == 0
       setTimeout =>
         Batman.currentApp.logger.debug("Processing #{method} with data #{JSON.stringify(data)}")
-        Batman.ModelUpdater.process(method, @model, data)
+        Batman.Reactor.process(method, @model, data)
       , 0
     else
       Batman.currentApp.logger.debug("Delaying #{method}")
