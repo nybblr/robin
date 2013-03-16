@@ -8,7 +8,7 @@ Okay, let's face it: realtime updates are awesome and the future of web apps. Bu
 
 Credit where due!
 -----------------
-Much thanks to [@zhubert](http://github.com/zhubert) for his `fancy_batman_app` with Pusher updates. I started from his code and rewrote it to work with Faye and a slightly cleaner architecture.
+Much thanks to [@zhubert](https://github.com/zhubert) for his [fancy_batman_app](https://github.com/zhubert/fancy_batman_app) with Pusher updates. I started from his code and rewrote it to work with Faye and a slightly cleaner architecture.
 
 Usage
 =====
