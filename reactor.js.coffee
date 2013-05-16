@@ -11,7 +11,7 @@ Batman.Reactor =
     if _.contains @_verbs, verb
       @['_'+verb](model, data)
     else
-      Batman.currentApp.logger.warn("unrecognized batch operation: " + verb)
+      Batman.developer.warn("unrecognized batch operation: " + verb)
 
   _enqueue: (model, batch_item) ->
     @_q.queue (next) =>
@@ -31,7 +31,7 @@ Batman.Reactor =
     # model = Batman.currentApp[reload_data.model_name]
     match_key = data.match_key
     match_value = data.match_value
-    Batman.currentApp.logger.debug("FLUSH #{model.name} - #{match_key} => #{match_value}")
+    Batman.developer.log("FLUSH #{model.name} - #{match_key} => #{match_value}")
     recordsToRemove = model.get('loaded').indexedBy(match_key).get(match_value).toArray()
     recordsToRemove.forEach (existing) =>
       model.get('loaded').remove(existing)
@@ -44,12 +44,12 @@ Batman.Reactor =
 
   _batched: (model, batch) ->
     return if batch == undefined
-    Batman.currentApp.logger.debug("BATCH: " + batch.length)
+    Batman.developer.log("BATCH: " + batch.length)
     for batched_item in batch
       @_enqueue(model, batched_item)
 
   _created: (model, data) ->
-    Batman.currentApp.logger.debug("created: #{JSON.stringify(data)}")
+    Batman.developer.log("created: #{JSON.stringify(data)}")
     obj = model.get('loaded.indexedByUnique.id').get(data["id"])
     if obj # If object already in memory, update it
       obj._withoutDirtyTracking -> obj.fromJSON(data)
@@ -58,13 +58,13 @@ Batman.Reactor =
       model._mapIdentity(obj)
 
   _updated: (model, data) ->
-    Batman.currentApp.logger.debug("updated #{JSON.stringify(data)}")
+    Batman.developer.log("updated #{JSON.stringify(data)}")
     obj = model.get('loaded.indexedByUnique.id').get(data["id"])
     if obj
       obj._withoutDirtyTracking -> obj.fromJSON(data)
 
   _destroyed: (model, data) ->
-    Batman.currentApp.logger.debug("destroyed #{JSON.stringify(data)}")
+    Batman.developer.log("destroyed #{JSON.stringify(data)}")
     existing = model.get('loaded.indexedByUnique.id').get(data["id"])
     if existing
       model.get('loaded').remove(existing)

@@ -2,6 +2,9 @@
 - Rails examples and observer classes
 - JS examples
 - Events for realtime events
+- Implement as storage adapter
+- Generic socket interface
+- Entirely websocket backing, with JSON fallback
 - No Underscore dependency
 - Controller rerender options
 - Encapsulate Rails controllers with realtime options

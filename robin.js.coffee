@@ -19,7 +19,7 @@ class Batman.Robin extends Batman.Object
 
   subscribe: ->
     channel = @model.storageKey
-    console?.log "Subscribing to /#{channel}..."
+    Batman.developer.log "Subscribing to /#{channel}..."
     for verb in @constructor._verbs
       do (verb) =>
         @socket.subscribe "/#{channel}/#{verb}", (data) => @delayIfXhrRequests(verb, data)
@@ -27,11 +27,11 @@ class Batman.Robin extends Batman.Object
   delayIfXhrRequestsWithoutDecompress: (method, data) ->
     if Batman.Robin.activeXhrCount == 0
       setTimeout =>
-        Batman.currentApp.logger.debug("Processing #{method} with data #{JSON.stringify(data)}")
+        Batman.developer.log("Processing #{method} with data #{JSON.stringify(data)}")
         Batman.Reactor.process(method, @model, data)
       , 0
     else
-      Batman.currentApp.logger.debug("Delaying #{method}")
+      Batman.developer.log("Delaying #{method}")
       setTimeout =>
         @delayIfXhrRequestsWithoutDecompress(method, data)
       , 500
