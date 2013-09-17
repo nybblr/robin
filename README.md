@@ -65,6 +65,12 @@ Server (Rails)
 
 If you want to get an instant realtime backend for your Rails powered JSON API, checkout the [Robin.js Rails gem.](https://github.com/nybblr/robin-rails)
 
+Demo
+====
+You can checkout a full demo of Robin.js and some awesome Batman.js tidbits working out of a Rails app at [Awesome Starter,](https://github.com/nybblr/awesome-starter/tree/complete-demo-app) an app I made for my ATLRUG realtime talk.
+
+Have a peruse through those [slides](https://speakerdeck.com/nybblr/into-the-batmobile-realtime-batman-dot-js-with-robin-dot-js-and-rails) and [the video](http://vimeo.com/68354627) for a walkthrough.
+
 Contributing
 ============
 This project is (obviously) in its infancy with just the basics. TODO lists a bunch of features I hope to get implemented, but this is GitHub: if you add a feature on your own, give me a hand and contribute!
