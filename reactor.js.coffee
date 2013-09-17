@@ -8,7 +8,7 @@ Batman.Reactor =
 
   # Public interface for updating objects in Batman in a bulk/one off fashion
   process: (verb, model, data) ->
-    if _.contains @_verbs, verb
+    if @_verbs.contains verb
       @['_'+verb](model, data)
     else
       Batman.developer.warn("unrecognized batch operation: " + verb)
@@ -68,3 +68,7 @@ Batman.Reactor =
     existing = model.get('loaded.indexedByUnique.id').get(data["id"])
     if existing
       model.get('loaded').remove(existing)
+
+# Extensions
+Array.prototype.contains = (element) ->
+  @indexOf(element) > -1
