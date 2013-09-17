@@ -1,23 +1,19 @@
 #= require ./storage_adapter
 
-class Batman.RestStorage extends Batman.StorageAdapter
+class Batman.SocketStorage extends Batman.StorageAdapter
 
   class @CommunicationError extends @StorageError
     name: 'CommunicationError'
     constructor: (message) ->
       super(message || "A communication error has occurred!")
 
-  @JSONContentType: 'application/json'
-  @PostBodyContentType: 'application/x-www-form-urlencoded'
-
   @BaseMixin =
     request: (action, options, callback) ->
       if !callback
         callback = options
         options = {}
-      options.method ||= 'GET'
       options.action = action
-      @_doStorageOperation options.method.toLowerCase(), options, callback
+      @_doStorageOperation action, options, callback
 
   @ModelMixin: Batman.extend({}, @BaseMixin,
     urlNestsUnder: (keys...) ->
@@ -225,12 +221,12 @@ class Batman.RestStorage extends Batman.StorageAdapter
         env.json
     next()
 
-  @HTTPMethods =
-    create: 'POST'
-    update: 'PUT'
-    read: 'GET'
-    readAll: 'GET'
-    destroy: 'DELETE'
+  # @HTTPMethods =
+  #   create: 'POST'
+  #   update: 'PUT'
+  #   read: 'GET'
+  #   readAll: 'GET'
+  #   destroy: 'DELETE'
 
   for key in ['create', 'read', 'update', 'destroy', 'readAll', 'get', 'post', 'put', 'delete']
     do (key) =>

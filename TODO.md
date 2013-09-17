@@ -15,3 +15,24 @@
       id: 4
       status: 'old'
     }
+
+- Offline cache mode, with events (async delay)
+
+Websocket query API:
+- RESTful actions
+- Automatic subscriptions (fallback to REST, register for WS events)
+- Action syntax:
+	- create
+	- update
+	- destroy
+	- get
+	- filter
+- Powerful filter API like meta_where:
+
+{
+	matching: {
+		id: 1
+	},
+	count: 50
+}
+

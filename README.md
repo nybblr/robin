@@ -12,7 +12,7 @@ Much thanks to [@zhubert](https://github.com/zhubert) for his [fancy_batman_app]
 
 Usage
 =====
-Load up `robin.js`, `reactor.js`, and `logger.js` after jQuery and Batman.js.
+Load up `robin.js` and `reactor.js` after jQuery and Batman.js.
 
 Scripts
 -------
@@ -62,32 +62,11 @@ You're all set on the client side!
 
 Server (Rails)
 --------------
-**NOTE: This guide is for setting up observers in Rails, but any implementation which uses Faye and sends the appropriate payload will work.**
 
-The easiest way to get started is to add the excellent `faye-rails` gem to your Gemfile. This adds a nice wrapper for running Faye in your Rails app.
-
-Create a FayeRails::Controller for each model you want to observe and propagate to Robin:
-
-```ruby
-class PostsRealtime < FayeRails::Controller
-  observe Post, :after_create do |post|
-    PostsRealtime.publish "/posts/created", post.attributes
-  end
-
-  observe Post, :after_update do |post|
-    PostsRealtime.publish "/posts/updated", post.attributes
-  end
-
-  observe Post, :after_destroy do |post|
-    PostsRealtime.publish "/posts/destroyed", :id => post.id
-  end
-end
-```
-
-That's it! If you've got faye-rails setup and running Faye correctly (e.g. make sure you use Thin), you should now be able to open several browser clients, edit models in the JS console, then watch the events propagate to other subscribed clients!
+If you want to get an instant realtime backend for your Rails powered JSON API, checkout the [Robin.js Rails gem.](https://github.com/nybblr/robin-rails)
 
 Contributing
 ============
 This project is (obviously) in its infancy with just the basics. TODO lists a bunch of features I hope to get implemented, but this is GitHub: if you add a feature on your own, give me a hand and contribute!
 
-No guidelines yet other than your basics: fork it, submit pull request, and try to follow the conventions already in the code. Any and all quality contributions welcome!
+No guidelines yet other than your basics: fork it, submit a pull request with relevant tests, and try to follow the conventions already in the code. Any and all quality contributions welcome!
