@@ -38,15 +38,15 @@ Batman.Reactor =
     model.get('loaded.indexedByUnique.id').get(data["id"])
 
   # Flush every object of a certain model that matches the criterion (all comments for a post)
-  # used when you have too much data to pass through Pusher but want Batman to request updates
+  # used when you want Batman to request updates
   _flushed: (model, data) ->
-    # model = Batman.currentApp[reload_data.model_name]
-    match_key = data.match_key
+    match_key   = data.match_key
     match_value = data.match_value
     Batman.developer.log("FLUSH #{model.name} - #{match_key} => #{match_value}")
+
     recordsToRemove = model.get('loaded').indexedBy(match_key).get(match_value).toArray()
-    recordsToRemove.forEach (existing) =>
-      model.get('loaded').remove(existing)
+    for record in recordsToRemove
+      model.get('loaded').remove(record)
     if match_key == 'id'
       model.find match_value, ->
     else
@@ -58,8 +58,8 @@ Batman.Reactor =
     return unless batch?
     Batman.developer.log("BATCH: " + batch.length)
 
-    for batched_item in batch
-      @_enqueue(batch_item[0], model, batch_item[1])
+    for item in batch
+      @_enqueue(item[0], model, item[1])
 
   _created: (model, data) ->
     Batman.developer.log("created: #{JSON.stringify(data)}")
