@@ -12,7 +12,7 @@ Much thanks to [@zhubert](https://github.com/zhubert) for his [fancy_batman_app]
 
 Usage
 =====
-Load up `robin.js` and `reactor.js` after jQuery and Batman.js.
+Load up `robin.js.coffee` with its dependencies after Batman.js.
 
 Scripts
 -------
