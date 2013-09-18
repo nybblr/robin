@@ -1,7 +1,9 @@
+#= require ./lib/queue
+
 # Utility class for updating models in memory.
 Batman.Reactor =
-  # Private queue for jQuery
-  _q: $({})
+  # Private queue for batching
+  _q: queue(1)
 
   # Valid batch operations
   _verbs: ["updated", "created", "destroyed", "flushed", "batched"]
@@ -9,18 +11,22 @@ Batman.Reactor =
   # Public interface for updating objects in Batman in a bulk/one off fashion
   process: (verb, model, data) ->
     if @_verbs.contains verb
-      @['_'+verb](model, data)
+      if verb is 'batched'
+        @_batched(model, data)
+      else
+        @_enqueue(verb, model, data)
     else
-      Batman.developer.warn("unrecognized batch operation: " + verb)
+      Batman.developer.warn("unrecognized operation: " + verb)
 
-  _enqueue: (model, batch_item) ->
-    @_q.queue (next) =>
-      @process(batch_item[0], model, batch_item[1])
+  _execute: (verb, model, data) ->
+    @['_'+verb](model, data)
+
+  _enqueue: (verb, model, data) ->
+    @_q.defer (next) =>
+      @_execute(verb, model, data)
       next()
 
   _getObject: (model, data) ->
-    # model = Batman.currentApp[pushed_data.model_name]
-    # data = pushed_data.model_data
     obj = new model()
     obj._withoutDirtyTracking -> obj.fromJSON(data)
     return obj
@@ -46,7 +52,7 @@ Batman.Reactor =
     return if batch == undefined
     Batman.developer.log("BATCH: " + batch.length)
     for batched_item in batch
-      @_enqueue(model, batched_item)
+      @_enqueue(batch_item[0], model, batch_item[1])
 
   _created: (model, data) ->
     Batman.developer.log("created: #{JSON.stringify(data)}")

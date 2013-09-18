@@ -1,3 +1,5 @@
+#= require ./reactor
+
 # Push-persistence backed by Faye.
 class Batman.Robin extends Batman.Object
   @_nest: []
