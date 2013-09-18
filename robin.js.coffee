@@ -24,23 +24,9 @@ class Batman.Robin extends Batman.Object
     Batman.developer.log "Subscribing to /#{channel}..."
     for verb in @constructor._verbs
       do (verb) =>
-        @socket.subscribe "/#{channel}/#{verb}", (data) => @delayIfXhrRequests(verb, data)
+        @socket.subscribe "/#{channel}/#{verb}", (data) => @_process(verb, data)
 
-  delayIfXhrRequestsWithoutDecompress: (method, data) ->
-    if Batman.Robin.activeXhrCount == 0
-      setTimeout =>
-        Batman.developer.log("Processing #{method} with data #{JSON.stringify(data)}")
-        Batman.Reactor.process(method, @model, data)
-      , 0
-    else
-      Batman.developer.log("Delaying #{method}")
-      setTimeout =>
-        @delayIfXhrRequestsWithoutDecompress(method, data)
-      , 500
-
-  delayIfXhrRequests: (method, data) ->
-    @delayIfXhrRequestsWithoutDecompress(method, data)
+  _process: (verb, data) ->
+    Batman.Reactor.process(verb, @model, data)
 
 @Robin = Batman.Robin
-@Robin.activeXhrCount = 0
-$(document).ajaxSend(=> @Robin.activeXhrCount++).ajaxComplete(=> @Robin.activeXhrCount--)
