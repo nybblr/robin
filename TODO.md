@@ -1,9 +1,9 @@
 - Tests!!!
-- Sidekiq job processing with batch/flushing
-- JS examples
+- Move core exts out into lib
 - Get rid of boilerplate
 - Events for realtime events
 - Implement as storage adapter
+- Sidekiq job processing with batch/flushing
 - Generic socket interface: Batman.Socket or Batman.Robin.Socket
 - Entirely websocket backing, with JSON fallback
 - Controller rerender options
