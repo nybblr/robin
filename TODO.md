@@ -1,3 +1,4 @@
+- Tests!!!
 - Sidekiq job processing with batch/flushing
 - JS examples
 - Get rid of boilerplate

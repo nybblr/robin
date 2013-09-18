@@ -26,10 +26,16 @@ Batman.Reactor =
       @_execute(verb, model, data)
       next()
 
-  _getObject: (model, data) ->
-    obj = new model()
-    obj._withoutDirtyTracking -> obj.fromJSON(data)
-    return obj
+  _updateRecord: (record, data) ->
+    record._withoutDirtyTracking -> record.fromJSON(data)
+
+  _initRecord: (model, data) ->
+    record = new model()
+    @_updateRecord(record, data)
+    return record
+
+  _findRecord: (model, data) ->
+    model.get('loaded.indexedByUnique.id').get(data["id"])
 
   # Flush every object of a certain model that matches the criterion (all comments for a post)
   # used when you have too much data to pass through Pusher but want Batman to request updates
@@ -49,31 +55,32 @@ Batman.Reactor =
       model.load options
 
   _batched: (model, batch) ->
-    return if batch == undefined
+    return unless batch?
     Batman.developer.log("BATCH: " + batch.length)
+
     for batched_item in batch
       @_enqueue(batch_item[0], model, batch_item[1])
 
   _created: (model, data) ->
     Batman.developer.log("created: #{JSON.stringify(data)}")
-    obj = model.get('loaded.indexedByUnique.id').get(data["id"])
-    if obj # If object already in memory, update it
-      obj._withoutDirtyTracking -> obj.fromJSON(data)
+
+    record = @_findRecord(model, data)
+    if record? # already in memory, update it
+      @_updateRecord(model, data)
     else # create object in memory
-      obj = @_getObject(model, data)
-      model._mapIdentity(obj)
+      model._mapIdentity @_initRecord(model, data)
 
   _updated: (model, data) ->
     Batman.developer.log("updated #{JSON.stringify(data)}")
-    obj = model.get('loaded.indexedByUnique.id').get(data["id"])
-    if obj
-      obj._withoutDirtyTracking -> obj.fromJSON(data)
+
+    record = @_findRecord(model, data)
+    @_updateRecord(record, data) if record?
 
   _destroyed: (model, data) ->
     Batman.developer.log("destroyed #{JSON.stringify(data)}")
-    existing = model.get('loaded.indexedByUnique.id').get(data["id"])
-    if existing
-      model.get('loaded').remove(existing)
+
+    record = @_findRecord(model, data)
+    model.get('loaded').remove(record) if record?
 
 # Extensions
 Array.prototype.contains = (element) ->
