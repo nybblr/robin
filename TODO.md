@@ -1,7 +1,8 @@
 - Sidekiq job processing with batch/flushing
-- Rails examples and observer classes
 - JS examples
+- Get rid of boilerplate
 - Events for realtime events
+- Remove jQuery dep
 - Implement as storage adapter
 - Generic socket interface: Batman.Socket or Batman.Robin.Socket
 - Entirely websocket backing, with JSON fallback
@@ -21,17 +22,17 @@ Websocket query API:
 - RESTful actions
 - Automatic subscriptions (fallback to REST, register for WS events)
 - Action syntax:
-	- create
-	- update
-	- destroy
-	- get
-	- filter
+  - create
+  - update
+  - destroy
+  - get
+  - filter
 - Powerful filter API like meta_where:
 
 {
-	matching: {
-		id: 1
-	},
-	count: 50
+  matching: {
+    id: 1
+  },
+  count: 50
 }
 
