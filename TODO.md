@@ -1,5 +1,4 @@
 - Tests!!!
-- Move core exts out into lib
 - Get rid of boilerplate
 - Events for realtime events
     - Run something besides change event, augment with lock to prevent double saves

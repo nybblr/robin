@@ -3,10 +3,11 @@
 # Push-persistence backed by Faye.
 class Batman.Robin extends Batman.Object
   @_nest: []
-  @_verbs: ["updated", "created", "destroyed", "flushed", "batched"]
+
+  @connect: (@socket) ->
+    Batman.Robin.fire('socket:ready')
 
   @on 'socket:ready', ->
-    @socket = Batman.currentApp.socket
     bird() for bird in @_nest
 
   constructor: (@model) ->
@@ -22,7 +23,7 @@ class Batman.Robin extends Batman.Object
   subscribe: ->
     channel = @model.storageKey
     Batman.developer.log "Subscribing to /#{channel}..."
-    for verb in @constructor._verbs
+    for verb in Batman.Reactor._verbs
       do (verb) =>
         @socket.subscribe "/#{channel}/#{verb}", (data) => @_process(verb, data)
 
