@@ -16,15 +16,19 @@ Batman.Reactor =
       else
         @_enqueue(verb, model, data)
     else
-      Batman.developer.warn("unrecognized operation: " + verb)
+      Batman.developer.warn("unrecognized verb: " + verb)
 
   _execute: (verb, model, data) ->
+    Batman.developer.log("#{verb} #{model.name} => #{JSON.stringify(data)}")
     @['_'+verb](model, data)
 
   _enqueue: (verb, model, data) ->
     @_q.defer (next) =>
       @_execute(verb, model, data)
       next()
+
+  _removeRecord: (model, record) ->
+    model.get('loaded').remove(record)
 
   _updateRecord: (record, data) ->
     record._withoutDirtyTracking -> record.fromJSON(data)
@@ -37,48 +41,41 @@ Batman.Reactor =
   _findRecord: (model, data) ->
     model.get('loaded.indexedByUnique.id').get(data["id"])
 
-  # Flush every object of a certain model that matches the criterion (all comments for a post)
-  # used when you want Batman to request updates
+  # Flush every record of a model matching the criterion.
+  # Makes Batman request updates.
   _flushed: (model, data) ->
-    match_key   = data.match_key
-    match_value = data.match_value
-    Batman.developer.log("FLUSH #{model.name} - #{match_key} => #{match_value}")
+    key   = data.key
+    value = data.value
 
-    recordsToRemove = model.get('loaded').indexedBy(match_key).get(match_value).toArray()
+    recordsToRemove = model.get('loaded').indexedBy(key).get(value).toArray()
     for record in recordsToRemove
-      model.get('loaded').remove(record)
-    if match_key == 'id'
-      model.find match_value, ->
+      @_removeRecord(model, record)
+    if key is 'id'
+      model.find value, ->
     else
       options = {}
-      options["#{match_key}"] = match_value
+      options["#{key}"] = value
       model.load options
 
   _batched: (model, batch) ->
     return unless batch?
-    Batman.developer.log("BATCH: " + batch.length)
+    Batman.developer.log("batched (#{batch.length})")
 
     for item in batch
       @_enqueue(item[0], model, item[1])
 
   _created: (model, data) ->
-    Batman.developer.log("created: #{JSON.stringify(data)}")
-
     record = @_findRecord(model, data)
-    if record? # already in memory, update it
+    if record? # already in memory
       @_updateRecord(model, data)
     else # create object in memory
       model._mapIdentity @_initRecord(model, data)
 
   _updated: (model, data) ->
-    Batman.developer.log("updated #{JSON.stringify(data)}")
-
     record = @_findRecord(model, data)
     @_updateRecord(record, data) if record?
 
   _destroyed: (model, data) ->
-    Batman.developer.log("destroyed #{JSON.stringify(data)}")
-
     record = @_findRecord(model, data)
-    model.get('loaded').remove(record) if record?
+    @_removeRecord(model, record) if record?
 
