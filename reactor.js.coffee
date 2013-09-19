@@ -10,7 +10,7 @@ Batman.Reactor =
 
   # Public interface for updating objects in Batman in a bulk/one off fashion
   process: (verb, model, data) ->
-    if @_verbs.contains verb
+    if @_verbs.indexOf(verb) > -1
       if verb is 'batched'
         @_batched(model, data)
       else
@@ -82,6 +82,3 @@ Batman.Reactor =
     record = @_findRecord(model, data)
     model.get('loaded').remove(record) if record?
 
-# Extensions
-Array.prototype.contains = (element) ->
-  @indexOf(element) > -1
