@@ -3,6 +3,10 @@
 - Events for realtime events
     - Run something besides change event, augment with lock to prevent double saves
 - Implement as storage adapter
+- Streaming protocol for large data sources: diffing, appending, or deletion.
+- Intermediate streaming without "committing" to database (buffered writes?). e.g. strings/titles
+- Peer-to-peer storage adapter for instant client-to-client sync
+    - Allows objects that won't be saved in DB (e.g. one time file transfer) to be synced in realtime between a few clients quickly, privately, and easily.
 - Sidekiq job processing with batch/flushing
 - Generic socket interface: Batman.Socket or Batman.Robin.Socket
 - Entirely websocket backing, with JSON fallback
