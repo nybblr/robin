@@ -7,7 +7,7 @@ class @Robin extends Batman.Object
   @_nest: []
 
   @connect: (@socket) ->
-    Robin.fire('socket:ready')
+    @fire('socket:ready')
 
   @on 'socket:ready', ->
     bird() for bird in @_nest
@@ -18,8 +18,8 @@ class @Robin extends Batman.Object
       @subscribe()
     else
       # Add it to the nest.
-      Robin._nest.push =>
-        @socket = Robin.socket
+      @constructor._nest.push =>
+        @socket = @constructor.socket
         @subscribe()
 
   subscribe: ->
