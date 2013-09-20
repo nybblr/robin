@@ -1,11 +1,13 @@
-#= require ./reactor
+#= require_self
+#= require ./robin/reactor
+#= require ./robin/adapter
 
 # Push-persistence backed by Faye.
-class Batman.Robin extends Batman.Object
+class @Robin extends Batman.Object
   @_nest: []
 
   @connect: (@socket) ->
-    Batman.Robin.fire('socket:ready')
+    Robin.fire('socket:ready')
 
   @on 'socket:ready', ->
     bird() for bird in @_nest
@@ -16,18 +18,18 @@ class Batman.Robin extends Batman.Object
       @subscribe()
     else
       # Add it to the nest.
-      Batman.Robin._nest.push =>
-        @socket = Batman.Robin.socket
+      Robin._nest.push =>
+        @socket = Robin.socket
         @subscribe()
 
   subscribe: ->
     channel = @model.storageKey
     Batman.developer.log "Subscribing to /#{channel}..."
-    for verb in Batman.Reactor._verbs
+    for verb in Robin.Reactor._verbs
       do (verb) =>
         @socket.subscribe "/#{channel}/#{verb}", (data) => @_process(verb, data)
 
   _process: (verb, data) ->
-    Batman.Reactor.process(verb, @model, data)
+    Robin.Reactor.process(verb, @model, data)
 
-@Robin = Batman.Robin
+window.Robin = Robin

@@ -1,7 +1,8 @@
-#= require ./lib/queue
+#= require ../lib/queue
+#= require_self
 
 # Utility class for updating models in memory.
-Batman.Reactor =
+Robin.Reactor =
   # Private queue for batching
   _q: queue(1)
 

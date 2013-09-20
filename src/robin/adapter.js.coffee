@@ -1,6 +1,4 @@
-#= require ./storage_adapter
-
-class Batman.SocketStorage extends Batman.StorageAdapter
+class Robin.Adapter extends Batman.StorageAdapter
 
   class @CommunicationError extends @StorageError
     name: 'CommunicationError'
