@@ -29,17 +29,13 @@ Batman.Reactor =
 
   _removeRecord: (model, record) ->
     model.get('loaded').remove(record)
+    record.get('lifecycle').destroyed()
 
-  _updateRecord: (record, data) ->
-    record._withoutDirtyTracking -> record.fromJSON(data)
-
-  _initRecord: (model, data) ->
-    record = new model()
-    @_updateRecord(record, data)
-    return record
+  _initOrUpdateRecord: (model, data) ->
+    model._makeOrFindRecordFromData(data)
 
   _findRecord: (model, data) ->
-    model.get('loaded.indexedByUnique.id').get(data["id"])
+    model._loadIdentity(data['id'])
 
   # Flush every record of a model matching the criterion.
   # Makes Batman request updates.
@@ -50,7 +46,7 @@ Batman.Reactor =
     recordsToRemove = model.get('loaded').indexedBy(key).get(value).toArray()
     for record in recordsToRemove
       @_removeRecord(model, record)
-    if key is 'id'
+    if key is model.get('primaryKey')
       model.find value, ->
     else
       options = {}
@@ -65,15 +61,11 @@ Batman.Reactor =
       @_enqueue(item[0], model, item[1])
 
   _created: (model, data) ->
-    record = @_findRecord(model, data)
-    if record? # already in memory
-      @_updateRecord(model, data)
-    else # create object in memory
-      model._mapIdentity @_initRecord(model, data)
+    @_initOrUpdateRecord(model, data)
 
   _updated: (model, data) ->
     record = @_findRecord(model, data)
-    @_updateRecord(record, data) if record?
+    @_initOrUpdateRecord(model, data) if record?
 
   _destroyed: (model, data) ->
     record = @_findRecord(model, data)
