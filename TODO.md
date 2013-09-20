@@ -1,8 +1,6 @@
 - Tests!!!
-- Get rid of boilerplate
 - Events for realtime events
     - Run something besides change event, augment with lock to prevent double saves
-- Implement as storage adapter
 - Streaming protocol for large data sources: diffing, appending, or deletion.
 - Intermediate streaming without "committing" to database (buffered writes?). e.g. strings/titles
 - Peer-to-peer storage adapter for instant client-to-client sync

@@ -42,12 +42,17 @@ First off, Robin needs a Faye connection. Set it up however you like; here's one
 
 This assumes that the URL for your Faye server is in a `meta` tag (it's not nice to embed it directly in the code). Once you've pulled out the path, just tell Robin to connect with that socket by default.
 
-In your models (that you want to receive push updates), initialize a Robin instance for the model:
+In your models (that you want to receive push updates), just switch to the Robin storage adapter (Rails based at the moment).
 
 ```coffeescript
-...
-# Load Robin
-@set 'robin', new Robin(@)
+class Awesome.Post extends Batman.Model
+  @resourceName: 'post'
+  @storageKey: 'posts'
+
+  @persist Robin.Adapter
+
+  ...
+end
 ```
 
 You're all set on the client side!
