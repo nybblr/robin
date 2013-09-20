@@ -31,13 +31,16 @@ On the client side, you need a few things to get started.
 First off, Robin needs a Faye connection. Set it up however you like; here's one way to do it in your main app file:
 
 ```coffeescript
-...
-@on 'run', ->
-  # Open Faye socket for push
-  @socket = new Faye.Client $('meta[name="faye-url"]').attr('content')
+class Awesome extends Batman.App
+  # ...
 
-  Robin.connect(@socket)
-...
+  @on 'run', ->
+    # Open Faye socket for push
+    @socket = new Faye.Client $('meta[name="faye-url"]').attr('content')
+
+    Robin.connect(@socket)
+
+  # ...
 ```
 
 This assumes that the URL for your Faye server is in a `meta` tag (it's not nice to embed it directly in the code). Once you've pulled out the path, just tell Robin to connect with that socket by default.
@@ -52,7 +55,6 @@ class Awesome.Post extends Batman.Model
   @persist Robin.Adapter
 
   # ...
-end
 ```
 
 You're all set on the client side!
