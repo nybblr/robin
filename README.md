@@ -51,7 +51,7 @@ class Awesome.Post extends Batman.Model
 
   @persist Robin.Adapter
 
-  ...
+  # ...
 end
 ```
 
