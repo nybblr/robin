@@ -36,7 +36,7 @@ First off, Robin needs a Faye connection. Set it up however you like; here's one
   # Open Faye socket for push
   @socket = new Faye.Client $('meta[name="faye-url"]').attr('content')
 
-  Batman.Robin.connect(@socket)
+  Robin.connect(@socket)
 ...
 ```
 
@@ -47,7 +47,7 @@ In your models (that you want to receive push updates), initialize a Robin insta
 ```coffeescript
 ...
 # Load Robin
-@set 'robin', new Batman.Robin(@)
+@set 'robin', new Robin(@)
 ```
 
 You're all set on the client side!
