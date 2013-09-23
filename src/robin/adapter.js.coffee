@@ -16,7 +16,7 @@ Robin.AdapterMethods =
     Robin.Reactor.process(verb, @model, data)
 
 class Robin.Adapter extends Batman.RailsStorage
-  Batman.mixin @::, Robin.AdapterMethods
+  @mixin Robin.AdapterMethods
 
   constructor: (model) ->
     super(model)
