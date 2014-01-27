@@ -75,3 +75,7 @@ Contributing
 This project is (obviously) in its infancy with just the basics. TODO lists a bunch of features I hope to get implemented, but this is GitHub: if you add a feature on your own, give me a hand and contribute!
 
 No guidelines yet other than your basics: fork it, submit a pull request with relevant tests, and try to follow the conventions already in the code. Any and all quality contributions welcome!
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/nybblr/robin/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
