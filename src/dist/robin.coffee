@@ -1,7 +1,6 @@
 #= require_self
-#= require ./robin/reactor
-#= require ./robin/adapter
-#= require ./lib/rtc
+#= require ../robin/reactor
+#= require ../robin/adapter
 
 # Push-persistence backed by Faye.
 class @Robin extends Batman.Object

@@ -1,0 +1,9 @@
+# NPM packages folder.
+/node_modules
+
+# Bower stuff.
+/bower_components
+/components
+
+/tmp
+
