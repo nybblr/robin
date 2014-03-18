@@ -1,3 +1,5 @@
+window.Robin ||= {}
+
 Robin.AdapterMethods =
   subscribe: ->
     Robin.observeAndFire 'socket', (newVal, oldVal) =>

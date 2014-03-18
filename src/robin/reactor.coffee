@@ -1,5 +1,7 @@
 #= require ../lib/queue
 #= require_self
+#
+window.Robin ||= {}
 
 # Utility class for updating models in memory.
 Robin.Reactor =
