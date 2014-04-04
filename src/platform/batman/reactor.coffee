@@ -1,4 +1,4 @@
-#= require ../lib/queue
+#= require ../../lib/queue
 #= require_self
 #
 window.Robin ||= {}

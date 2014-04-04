@@ -19,6 +19,10 @@
     }
 
 - Offline cache mode, with events (async delay)
+- Abstract reactor/adapter APIs into Robin commons
+- Abstract Faye adapter; just provide a pub/sub interface
+- Think of every index request as a query: make a separate Set that tracks sources so only the source has to be updated
+- Making an index request triggers set subscription
 
 Websocket query API:
 - RESTful actions
